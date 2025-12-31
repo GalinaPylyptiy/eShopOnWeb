@@ -1,4 +1,5 @@
-﻿using BlazorShared;
+﻿using System;
+using BlazorShared;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Builder;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 using NimblePros.Metronome;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +25,18 @@ builder.Services.AddFastEndpoints();
 
 // Use to force loading of appsettings.json of test project
 builder.Configuration.AddConfigurationFile("appsettings.test.json");
+
+builder.Services.AddApplicationInsightsTelemetry();
+
+builder.Logging.AddApplicationInsights(
+    configureTelemetryConfiguration: (config) => {
+        config.ConnectionString = builder.Configuration["ApplicationInsights:ConnectionString"];
+    },
+    configureApplicationInsightsLoggerOptions: (options) => {}
+);
+builder.Logging.AddFilter<ApplicationInsightsLoggerProvider>(
+    "Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints.CatalogItemListPagedEndpoint",
+    LogLevel.Information);
 
 builder.Services.ConfigureLocalDatabaseContexts(builder.Configuration);
 

@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
-
+using Microsoft.Extensions.Logging;
 namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints;
 
 /// <summary>
 /// List Catalog Items (paged)
 /// </summary>
 public class CatalogItemListPagedEndpoint(IRepository<CatalogItem> itemRepository, IUriComposer uriComposer,
-        AutoMapper.IMapper mapper)
+        AutoMapper.IMapper mapper, ILogger<CatalogItemListPagedEndpoint> logger)
     : Endpoint<ListPagedCatalogItemRequest, ListPagedCatalogItemResponse>
 {
     public override void Configure()
@@ -57,6 +57,14 @@ public class CatalogItemListPagedEndpoint(IRepository<CatalogItem> itemRepositor
         {
             response.PageCount = totalItems > 0 ? 1 : 0;
         }
+
+
+        logger.LogInformation(
+            "CatalogItemListPagedEndpoint returned {Count} catalog items for PageIndex={PageIndex}, PageSize={PageSize}",
+            response.CatalogItems.Count,
+            request.PageIndex,
+            request.PageSize
+        );
 
         return response;
     }
