@@ -1,5 +1,4 @@
-﻿using Ardalis.ListStartupServices;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+﻿using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
@@ -76,16 +75,14 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddCustomHealthChecks();
 
-builder.Services.Configure<ServiceConfig>(config =>
-{
-    config.Services = new List<ServiceDescriptor>(builder.Services);
-    config.Path = "/allservices";
-});
-
 builder.Services.AddBlazor(builder.Configuration);
 
 builder.Services.AddMetronome();
-builder.AddSeqEndpoint(connectionName: "seq");
+
+if (!string.IsNullOrEmpty(builder.Configuration["Seq:ServerUrl"]))
+{
+    builder.AddSeqEndpoint(connectionName: "seq");
+}
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -111,7 +108,6 @@ app.UseCustomHealthChecks();
 app.UseTroubleshootingMiddlewares();
 
 app.UseHttpsRedirection();
-app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 app.UseRouting();
 

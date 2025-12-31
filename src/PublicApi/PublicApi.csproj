@@ -13,6 +13,7 @@
     <PackageReference Include="Aspire.Seq" />
     <PackageReference Include="FastEndpoints" />
     <PackageReference Include="FastEndpoints.Swagger" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
@@ -23,6 +24,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
     <PackageReference Include="NimblePros.Metronome" />     
